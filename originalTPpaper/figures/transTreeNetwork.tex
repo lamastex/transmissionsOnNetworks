@@ -1,0 +1,63 @@
+$\fbox{
+%\left(
+\begin{forest}
+[$\imath_2$,circle,draw]
+\end{forest} ,
+\begin {tikzpicture}[-latex ,auto ,node distance =1.0 cm and 1.0cm ,on grid ,
+semithick 
+]
+\node[state] (C) {$\imath_3$};
+\node[state] (A) [above left=of C] {$\imath_1$};
+\node[stateI] (B) [above right =of C] {$\imath_2$};
+%\path (A) edge [loop left] node[left] {$1/4$} (A);
+\path (C) edge [bend left =25] node[below =0.15 cm] {} (A);
+\path (A) edge [bend right = -15] node[below =0.15 cm] {} (C);
+\path (A) edge [bend left =25] node[above] {} (B);
+\path (B) edge [bend left =15] node[below=0.0 cm] {} (A);
+\path (C) edge [bend left =15] node[below =0.15 cm] {} (B);
+\path (B) edge [bend right = -25] node[below =0.15 cm] {} (C);
+\end{tikzpicture}
+%\right)
+}$
+$\overset{1/2}{\longrightarrow}$
+$\fbox{%\left(
+\begin{forest}
+[$1$,circle,draw,[$\imath_2$, circle,draw][$\imath_3$, circle, draw]]
+\end{forest} ,
+\begin {tikzpicture}[-latex ,auto ,node distance =1.0 cm and 1.0cm ,on grid ,
+semithick 
+]
+\node[stateI] (C) {$\imath_3$};
+\node[state] (A) [above left=of C] {$\imath_1$};
+\node[stateI] (B) [above right =of C] {$\imath_2$};
+%\path (A) edge [loop left] node[left] {$1/4$} (A);
+\path (C) edge [bend left =25] node[below =0.15 cm] {} (A);
+\path (A) edge [bend right = -15] node[below =0.15 cm] {} (C);
+\path (A) edge [bend left =25] node[above] {} (B);
+\path (B) edge [bend left =15] node[below=0.0 cm] {} (A);
+\path (C) edge [bend left =15] node[below =0.15 cm] {} (B);
+\path (B) edge [bend right = -25] node[below =0.15 cm] {} (C);
+\end{tikzpicture}
+%\right)
+}$
+$\overset{1/2}{\longrightarrow}$
+$\fbox{
+\begin{forest}
+[$1$,circle,draw,[$2$,circle,draw,[$\imath_2$, circle,draw][$\imath_1$, circle,draw]][$\imath_3$, circle, draw]]
+\end{forest} ,
+\begin {tikzpicture}[-latex ,auto ,node distance =1.0 cm and 1.0cm ,on grid ,
+semithick 
+]
+\node[stateI] (C) {$\imath_3$};
+\node[stateI] (A) [above left=of C] {$\imath_1$};
+\node[stateI] (B) [above right =of C] {$\imath_2$};
+%\path (A) edge [loop left] node[left] {$1/4$} (A);
+\path (C) edge [bend left =25] node[below =0.15 cm] {} (A);
+\path (A) edge [bend right = -15] node[below =0.15 cm] {} (C);
+\path (A) edge [bend left =25] node[above] {} (B);
+\path (B) edge [bend left =15] node[below=0.0 cm] {} (A);
+\path (C) edge [bend left =15] node[below =0.15 cm] {} (B);
+\path (B) edge [bend right = -25] node[below =0.15 cm] {} (C);
+\end{tikzpicture}
+}
+$

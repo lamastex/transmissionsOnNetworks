@@ -1,0 +1,85 @@
+\begin{tabular}{cc}
+\multirow{2}{*}[5em]{
+{\scalebox{0.85}{\begin{tikzpicture}
+%
+%\GraphInit[vstyle=Art]
+%
+\useasboundingbox (0,0) rectangle (5.0cm,5.0cm);
+%
+\Vertex[L=\hbox{$\imath_0$},x=5.0cm,y=2.5cm]{v0}
+\Vertex[L=\hbox{$\imath_1$},x=3.75cm,y=5.0cm]{v1}
+\Vertex[L=\hbox{$\imath_2$},x=1.25cm,y=5.0cm]{v2}
+\Vertex[L=\hbox{$\imath_3$},x=0.0cm,y=2.5cm]{v3}
+\Vertex[L=\hbox{$\imath_4$},x=1.25cm,y=0.0cm]{v4}
+\Vertex[L=\hbox{$\imath_5$},x=3.75cm,y=0.0cm]{v5}
+%
+\Edge[](v0)(v1)
+\Edge[](v0)(v5)
+\Edge[](v1)(v0)
+\Edge[](v1)(v2)
+\Edge[](v2)(v1)
+\Edge[](v2)(v3)
+\Edge[](v3)(v2)
+\Edge[](v3)(v4)
+\Edge[](v4)(v3)
+\Edge[](v4)(v5)
+\Edge[](v5)(v0)
+\Edge[](v5)(v4)
+%
+\end{tikzpicture}
+}}}
+&
+{\scalebox{0.7}{ \newcommand{\nodea}{\node[draw,circle] (a) {$1$}
+;}\newcommand{\nodeb}{\node[draw,circle] (b) {$3$}
+;}\newcommand{\nodec}{\node[draw,circle] (c) {$\imath_0$}
+;}\newcommand{\noded}{\node[draw,circle] (d) {$5$}
+;}\newcommand{\nodee}{\node[draw,circle] (e) {$\imath_5$}
+;}\newcommand{\nodef}{\node[draw,circle] (f) {$\imath_4$}
+;}\newcommand{\nodeg}{\node[draw,circle] (g) {$2$}
+;}\newcommand{\nodeh}{\node[draw,circle] (h) {$\imath_1$}
+;}\newcommand{\nodei}{\node[draw,circle] (i) {$4$}
+;}\newcommand{\nodej}{\node[draw,circle] (j) {$\imath_2$}
+;}\newcommand{\nodeba}{\node[draw,circle] (ba) {$\imath_3$}
+;}\begin{tikzpicture}[auto]
+\matrix[column sep=.3cm, row sep=.3cm,ampersand replacement=\&]{
+         \&         \&         \&         \&         \& \nodea  \&         \&         \&         \&         \&         \\ 
+         \& \nodeb  \&         \&         \&         \&         \&         \& \nodeg  \&         \&         \&         \\ 
+ \nodec  \&         \&         \& \noded  \&         \&         \& \nodeh  \&         \&         \& \nodei  \&         \\ 
+         \&         \& \nodee  \&         \& \nodef  \&         \&         \&         \& \nodej  \&         \& \nodeba \\
+};
+
+\path[ultra thick, red] (d) edge (e) edge (f)
+	(b) edge (c) edge (d)
+	(i) edge (j) edge (ba)
+	(g) edge (h) edge (i)
+	(a) edge (b) edge (g);
+\end{tikzpicture}}
+}\\
+~& {\scalebox{0.7}{ \newcommand{\nodea}{\node[draw,circle] (a) {$1$}
+;}\newcommand{\nodeb}{\node[draw,circle] (b) {$2$}
+;}\newcommand{\nodec}{\node[draw,circle] (c) {$\imath_0$}
+;}\newcommand{\noded}{\node[draw,circle] (d) {$3$}
+;}\newcommand{\nodee}{\node[draw,circle] (e) {$\imath_1$}
+;}\newcommand{\nodef}{\node[draw,circle] (f) {$5$}
+;}\newcommand{\nodeg}{\node[draw,circle] (g) {$\imath_2$}
+;}\newcommand{\nodeh}{\node[draw,circle] (h) {$\imath_3$}
+;}\newcommand{\nodei}{\node[draw,circle] (i) {$4$}
+;}\newcommand{\nodej}{\node[draw,circle] (j) {$\imath_5$}
+;}\newcommand{\nodeba}{\node[draw,circle] (ba) {$\imath_4$}
+;}\begin{tikzpicture}[auto]
+\matrix[column sep=.3cm, row sep=.3cm,ampersand replacement=\&]{
+         \&         \&         \&         \&         \&         \&         \& \nodea  \&         \&         \&         \\ 
+         \& \nodeb  \&         \&         \&         \&         \&         \&         \&         \& \nodei  \&         \\ 
+ \nodec  \&         \&         \& \noded  \&         \&         \&         \&         \& \nodej  \&         \& \nodeba \\ 
+         \&         \& \nodee  \&         \&         \& \nodef  \&         \&         \&         \&         \&         \\ 
+         \&         \&         \&         \& \nodeg  \&         \& \nodeh  \&         \&         \&         \&         \\
+};
+
+\path[ultra thick, red] (f) edge (g) edge (h)
+	(d) edge (e) edge (f)
+	(b) edge (c) edge (d)
+	(i) edge (j) edge (ba)
+	(a) edge (b) edge (i);
+\end{tikzpicture}}
+}\\
+\end{tabular}
