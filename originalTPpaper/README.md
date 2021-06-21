@@ -4,6 +4,7 @@ The Transmission Process: A Combinatorial Stochastic Process for the Evolution o
 
 # Source files
 
+```
 pdflatex tp.tex 
 bibtex tp
 pdflatex tp.tex 
@@ -90,4 +91,4 @@ JTBFinal/tp.out
 JTBFinal/tp.pdf
 JTBFinal/tp.bbl
 JTBFinal/tp.dvi
-
+```
