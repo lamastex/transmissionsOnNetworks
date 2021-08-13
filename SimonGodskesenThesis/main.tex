@@ -67,33 +67,46 @@ While the SI-model captures the essence of an outbreak, it lacks a very importan
 
 Lastly, we have the SIS-model (susceptible-infected-susceptible). Certain diseases do not cause the body to build up an immunity at all and infected nodes become susceptible again, completely skipping the recovered state. Infected nodes return to being susceptible at a rate $\lambda_2$. The SI- and SIR-models behave fundamentally differently from the SIS-model since the infection will eventually be eradicated for the former models, and thereby lack the oscillating behaviour the SIS-model has inherited from allowing nodes to loop back to being susceptible. States looping back to being susceptible after being infected yields interesting results and implications, as we shall see in later sections.
 
+\subsection{Mathematical preliminaries}\label{prelim}
+In this section, we define the notation used in later sections to describe the transmission process on networks using different epidemic models. Let $\mathbb{N} := \{0,1,2,3,\dots\}$ be the natural numbers including zero and let $[n] := \{0,1,\dots,n-1\}$ be the set of $n$ numbers ranging from $0$ to $n-1$. The n different nodes in the network are labelled $n_i$, $\forall i\in [n]$ and is equipped with a state variable $s_i$. The variable $s_i$ takes value 0 if $n_i$ is susceptible, 1 if $m_i$ is infected and 2 if $m_i$ is recovered. If the epidemic model ignores the recovered state (SI- and SIS-models) then $s_i$ is a binary variable. Let the random variable $S(z)$ be the collection of the state of all nodes in the network at event z. Then, $s(z) \in \mathbb{S}_n := \{0,1\}^n$ for the epidemic models which does not consider the recovered state and $s(z) \in \mathbb{S}_n^* := \{0,1,2\}^n$ otherwise.
+
+We define $i(z): \mathbb{N} \rightarrow [n]$ to be a function assigning each number in $[n]$ a non-negative integer such that $n_{i(z)}$ is the z-th infected node. In particular, $n_{i(0)}$ is the initially infected node.
+
+We have a transmission tree accompanying the network, which captures the path of the contagion, keeping track of infectors and infectees for each event as the virus moves through the network. $t(z)$ is a rooted ranked planar binary tree with $z$ leaves and $z-1$ internal vertices. The leaves describe the node label of the infector and the infectee, and the internal vertices are integers describing the infection number in chronological order. See Section \ref{tree-section} for a more in-depth look at the transmission tree. Let $X(z) = (T(z),S(z))$ be the random variable that fully describes the transmission tree and the state of the network at event $z$. 
+
+We are now going to define the three sets which consists of possible states one can reach from the state $x = x(z)$ by a single event.
+Let $$\mathbb{I}(x) = \{x': P(X(z+1) = x' | X(z) = x) > 0, \textit{Event z+1 is an infection event}\}$$ be the set of possible states $x'$ one can reach from the state $x$ \textit{by a single infection event}. An infection event turns a susceptible node infected. Similarly, 
+$$\mathbb{R}(x) = \{x': P(X(z+1) = x' | X(z) = x) > 0, \textit{Event z+1 is a recovery event}\},$$
+$$\mathbb{S}(x) = \{x': P(X(z+1) = x' | X(z) = x) > 0, \textit{Event z+1 is a susceptibility event}\}$$
+be the set of possible states $x'$ one can reach from the state $x(z)$ by a single \textit{recovery event} or \textit{susceptibility event}, respectively. A recovery event recovers an infected node and a susceptibility event turns a node susceptible. In the coming sections, these sets will be used to describe the conditional probabilities of reach certain future states. Note the difference between $\mathbb{S}$ and $\mathbb{S}_n$. The former is a set of possible "next" states through a single susceptibility event, while the latter (with a subscript) is a static set of possible configurations of all nodes in the network. 
+
+Finally, we define the numbers $n^{(c)}_z$ and $n^{(i)}_z$ to be the number of infectious connections and the number of infected nodes, respectively, at event z. Note that $n^{(c)}_z$ is not the number of susceptible nodes, but the sum of the number of infected neighbours per susceptible node.
+
 
 \subsection{SI-model}\label{si-model-section}
-In the SI-model (susceptible-infected), we consider a population of $n$ nodes, where each node represents a person labelled $i$ and is equipped with a binary state $s_i$ that takes value $s_i = 0$ if node $n_i$ is susceptible and $s_i = 1$ if infected. Let $s = \{s_i:i\in[n] := [0,n]\cap \mathbb{N}\}\in S_n := \{0,1\}^n$ be the state of all nodes and let $s(z)$ be the state of all nodes at event number z. The only event taking place in this model is an infection event, in which an infected node spreads its infection to a susceptible node.
-
-We define $i(z): \mathbb{Z^+} \rightarrow [n]$ to be a function assigning each number in $[n]$ a non-negative integer such that $n_{i(z)}$ is the z-th infected node. In particular, $n_{i(0)}$ is the initially infected node.
-
-We have the transmission tree $\tau$ accompanying the network, which captures the path of the contagion, keeping track of infectors and infectees for each event as the virus moves through the network. $\tau$ is a rooted ranked planar binary transmission tree with $n$ leaves and $n-1$ internal vertices. The leaves describe the node label of the infector and the infectee, and the internal vertices are integers describing the infection number in chronological order. See Section \ref{tree-section} for a more in-depth look at the transmission tree. Let $X(z) = (\tau(z),s(z))$ be the double that fully describes the transmission tree and the state of the network between event $z$ and $z+1$. Finally, let $\mathbb{I}(x) = \{c: x \Rightarrow  c\}$ be the set of possible outcomes c after a single infection event occurred to x.  Then, the transition probability is 
+In the SI-model (susceptible-infected), we consider a population of $n$ nodes, where each node represents a host labelled $i$ and is equipped with a binary state $s_i$ that takes value $s_i = 0$ if node $n_i$ is susceptible and $s_i = 1$ if infected. Since $s_i$ is binary, we have $s(z) \in \mathbb{S}_n$. The only event taking place in this model is an infection event, in which an infected node spreads its infection to a susceptible node. Thus, $\mathbb{R}(x(z))=\mathbb{S}(x(z)) = \emptyset$, $\forall z\in \mathbb{N}$.
+Then, the transition probability is 
 
 \begin{equation} \label{firstP}
-P(X(z+1) = m |X(z)= c) = \\
+P(X(z+1) = x' |X(z)= x) = \\
 \begin{cases}
-& \frac{1}{n_z^{(c)}}  \quad \text{if} \quad m \in \mathbb{I}(c) \\
+& \frac{1}{n_z^{(c)}}  \quad \text{if} \quad x' \in \mathbb{I}(x) \\
 & 0 \quad \text{otherwise,}
 \end{cases}
 \end{equation}
-where $n_z^{(c)}$ the total number of infected neighbours for each susceptible node at event z. The time between events in the SI model is exponentially distributed with rate $\lambda_1$. The infinitesimal generator q for the Markov chain transition $x(z) = (\tau(z),s(z)) \Rightarrow m$ is
+The time between events in the SI model is exponentially distributed with rate $\lambda_1$. The infinitesimal generator q for the Markov chain transition $x(z) = (t(z),s(z)) \Rightarrow x'$ is
 \begin{equation}\label{trans1}
-q(x(z) \Rightarrow m) = \\
+q(x(z) \Rightarrow x') = \\
 \begin{cases}
-& \lambda_1   \quad \text{if} \quad m \in \mathbb{I}(x(z)) \\ 
-& -\lambda_1 n_z^{(c)} \quad \text{if} \quad m = x(z)\\
+& \lambda_1   \quad \text{if} \quad x' \in \mathbb{I}(x(z)) \\ 
+& -\lambda_1 n_z^{(c)} \quad \text{if} \quad x' = x(z)\\
 & 0 \quad \text{otherwise.}
 \end{cases}
 \end{equation}
 
 \subsection{SIR-model}\label{SIR-model-section}
-The SI-model accurately describes the nature of how a contagion spread in a network, but an outbreak is guaranteed and happens faster than in reality. This is inaccurate for many types of contagion, such as covid-19, since it lacks a third state; recovered. Recovered nodes cannot be infected or infect susceptible neighbours, and cause the infection to slow down, or even halt, as recovered nodes can act as a barrier between an infected node and susceptible nodes. In the SIR-model, the state of each node is no longer binary, and we allow a third state; $s_i = 2$. Now, $s(z) \in S_n = \{0,1,2\}^n$. An infected node becomes recovered at a rate $\lambda_2$. Let $n_z^{(i)}$ be the number of infected nodes after event z occurred. There are now two different events that can happen at every step; either it's an infection event or a recovery event. Since both events are exponentially distributed (with rates $\lambda_1$, $\lambda_2$), the time between any event happening is exponentially distributed with rate $\lambda = n_z^{(c)}\lambda_1+n_z^{(i)}\lambda_2$. By the law of competing exponentials, the probability $\delta_z$ of event z+1 being an infection event is then
+While the SI-model accurately describes the essence of how a contagion spreads in a network, it inaccurately describes the outbreak as a necessity, rather than a probabilistic occurrence, due to the fact that infected hosts remain infected indefinitely. In reality, infected hosts will eventually recover, and its susceptible neighbours will have lost an infection source. An outbreak can always be prevented through proper precautions, even in the case of a highly contagious (very large $\lambda_1$) infection. An outbreak can also be avoided if all infected nodes goes into quarantine to keep the infection contained within a small subset of the network.
+In this section, we explore the SIR-model where infected nodes turn recovered at a rate $\lambda_2$. Recovered nodes can act as a barrier between infected and susceptible nodes, causing the infection to slow down, or even halt. The state of each node is no longer binary as we allow a third value; $s_i = 2$, and thus, $s(z) \in \mathbb{S}_n^*$. There are now two different events that can happen at every step; either it's an infection event or a recovery event. Therefore, $\mathbb{S}(x(z)) = \emptyset$, $\forall z\in \mathbb{N}$. Since both events are exponentially distributed (with rates $\lambda_1$, $\lambda_2$), the time between any event happening is exponentially distributed with rate $\lambda = n_z^{(c)}\lambda_1+n_z^{(i)}\lambda_2$. By the law of competing exponentials, the probability $\delta_z$ of event z+1 being an infection event is then
 \begin{equation}\label{SIR-P12}
     P(\text{Event z+1 is an infection event}) := \delta_z = \frac{n^{(c)}_z\lambda_1}{n^{(c)}_z\lambda_1+n^{(i)}_z\lambda_2},
 \end{equation}
@@ -102,13 +115,13 @@ Similarly;
     P(\text{Event z+1 is a recovery event}) = 1-\delta_z =\frac{n^{(i)}_z\lambda_2}{n^{(c)}_z\lambda_1+n^{(i)}_z\lambda_2}.
 \end{equation}
 
-Let $\mathbb{R}(x)=\{c: x \Rightarrow c\}$ be the set of possible outcomes c after a single recover event occurred to x. Then, the probability of $X(z+1) = m$, given $X(z) = c$ is
+The transition probability is then
 \begin{equation} \label{firstPSIR}
 \begin{split}
-P(X(z+1) = m |X(z)= c) =
+P(X(z+1) = x' |X(z)= x) =
 \begin{cases}
-& \frac{\delta_z}{n_z^{(c)}} = \frac{\lambda_1}{\lambda}  \quad \text{if} \quad m \in \mathbb{I}(c) \\
-& \frac{1-\delta_z}{n_z^{(i)}}  =\frac{\lambda_2}{\lambda}\quad \text{if} \quad m \in \mathbb{R}(c) \\
+& \frac{\delta_z}{n_z^{(c)}} = \frac{\lambda_1}{\lambda}  \quad \text{if} \quad x' \in \mathbb{I}(x) \\
+& \frac{1-\delta_z}{n_z^{(i)}}  =\frac{\lambda_2}{\lambda}\quad \text{if} \quad x' \in \mathbb{R}(x) \\
 & 0 \quad \text{otherwise}
 \end{cases}
 \end{split}
@@ -116,11 +129,11 @@ P(X(z+1) = m |X(z)= c) =
 
 and the generator for the Markov process is
 \begin{equation}\label{qstarSIR}
-    q(x(z)\Rightarrow m) = 
+    q(x(z)\Rightarrow x') = 
     \begin{cases}
-    & \lambda_1 \quad \text{if} \quad m \in \mathbb{I}(x(z)) \\
-     & \lambda_2 \quad \text{if} \quad m \in \mathbb{R}(x(z)) \\
-    & -\lambda   \quad \text{if} \quad m = x(z)\\
+    & \lambda_1 \quad \text{if} \quad x' \in \mathbb{I}(x(z)) \\
+     & \lambda_2 \quad \text{if} \quad x' \in \mathbb{R}(x(z)) \\
+    & -\lambda   \quad \text{if} \quad x' = x(z)\\
     & 0 \quad \text{otherwise.}
     \end{cases}
 \end{equation}
@@ -131,15 +144,15 @@ The biggest difference between the SI-model and the SIR-model is the possibility
 \end{equation}
 which depend on the number of susceptible nodes connected to the initially infected node, $n_0^{(c)}$. The probability of having only 2 recovered nodes greatly depends on the network topology and is better discussed in sections \ref{simsirstarsec}-\ref{simsircomsec}. Finding the probability for more than two recovered nodes becomes difficult very quickly, because of how intertwined the order of the events can be.
 \subsection{SIS-model}\label{sis-model-section}
-The SI- and SIR-model have one property in common; the infection eventually disappears. Recovered nodes stay recovered forever, the death of the contagion is inevitable. If recovered nodes could become susceptible again, they could also become infected again, which yields an oscillating behaviour that is the point of interest of this section. In this section, we look at the SIS-model, where the state of infected nodes does not turn recovered, but instead "loop" back to susceptible at a rate $\lambda_2$. The rate of any event happening is, as with the SIR-model, $\lambda = n_z^{(c)}\lambda_1+n_z^{(i)}\lambda_2$
+The SI- and SIR-model have one property in common; the infection eventually disappears. Recovered nodes stay recovered forever and the death of the contagion is inevitable. If recovered nodes could become susceptible again, they could also become infected again, which yields an oscillating behaviour that is the point of interest of this section. In this section, we look at the SIS-model, where the state of infected nodes does not turn recovered, but instead "loop" back to susceptible at a rate $\lambda_2$. In this case, $\mathbb{R}(x(z)) = \emptyset$, $\forall z\in \mathbb{N}$. Since $s_i$ is once again binary, we have $s(z) \in \mathbb{S}_n$. The rate of any event happening is, as with the SIR-model, $\lambda = n_z^{(c)}\lambda_1+n_z^{(i)}\lambda_2$
 
-Allowing nodes to turn susceptible after being infected causes interesting dynamics to emerge, as the number of nodes in each state will oscillate around an equilibrium, rather than the infection dying out as it does in the SI- and SIR-models. Let $\mathbb{S}(x)=\{c: x \Rightarrow c\}$ be the set of possible outcomes c after a single recovery event occurred to x. A recovery event in this context is an event turning an infected node susceptible. The transition probability is then
+Allowing nodes to turn susceptible after being infected causes interesting dynamics to emerge, as the number of nodes in each state will oscillate around an equilibrium, rather than the infection dying out as it does in the SI- and SIR-models. The transition probability is then
 \begin{equation} \label{firstPSIS}
 \begin{split}
-P(X(z+1) = m |X(z)= c) =
+P(X(z+1) = x' |X(z)= x) =
 \begin{cases}
-& \frac{\delta_z}{n_z^{(c)}}=\frac{\lambda_1}{\lambda}  \quad \text{if} \quad m \in \mathbb{I}(c) \\
-& \frac{1-\delta_z}{n_z^{(i)}}=\frac{\lambda_2}{\lambda}  \quad \text{if} \quad m \in \mathbb{S}(c) \\
+& \frac{\delta_z}{n_z^{(c)}}=\frac{\lambda_1}{\lambda}  \quad \text{if} \quad x' \in \mathbb{I}(x) \\
+& \frac{1-\delta_z}{n_z^{(i)}}=\frac{\lambda_2}{\lambda}  \quad \text{if} \quad x' \in \mathbb{S}(x) \\
 & 0 \quad \text{otherwise,}
 \end{cases}
 \end{split}
@@ -147,11 +160,11 @@ P(X(z+1) = m |X(z)= c) =
 where $\delta_z$ is the probability the next event is an infection event.
 The generator for the Markov process is
 \begin{equation}\label{qSIS}
-    q(x(z)\Rightarrow m) = 
+    q(x(z)\Rightarrow x') = 
     \begin{cases}
-    & \lambda_1 \quad \text{if} \quad m \in \mathbb{I}(x(z)) \\
-     & \lambda_2 \quad \text{if} \quad m \in \mathbb{S}(x(z)) \\
-    & -\lambda   \quad \text{if} \quad m = x(z)\\
+    & \lambda_1 \quad \text{if} \quad x' \in \mathbb{I}(x(z)) \\
+     & \lambda_2 \quad \text{if} \quad x' \in \mathbb{S}(x(z)) \\
+    & -\lambda   \quad \text{if} \quad x' = x(z)\\
     & 0 \quad \text{otherwise.}
     \end{cases}
 \end{equation}
@@ -164,7 +177,7 @@ The probability of the initially infected node recovering before any other node 
 It is still possible to observe exactly $k>1$ infectees, but it is an exceedingly rare occurrence, especially as k grows large. Therefore, it is more reasonable to look at a different statistic; the distribution of infector/infectee frequency for each node in the network. This statistic is the point of interest of a simulation using the SIS-model, instead of studying the number of recovered nodes at the end of a simulation, as we do with the SIR-model.
 
 \section{Deterministic networks and the transmission tree}\label{tree-section}
-Knowledge of the network structure is an important aspect to understanding how a contagion spreads in a network and to understand the result of the simulations in Section \ref{simulation-section}. This section is dedicated to studying the network structure of the deterministic networks and the construction of the transmission tree. The simulations in Section \ref{simulation-section} cover one random network and three different deterministic networks (meaning their topology is fully known before its construction, no randomization is involved in its initialization); the star, path and complete networks. Figure \ref{threetrees} shows these three graphs with $n=5$. The leftmost picture is called the star network, where five of the nodes are called "outer" nodes and the sixth node is the star node denoted $n_*$. Note that a star network with $n=5$ have $n+1=6$ nodes. All outer nodes are connected to only a single node; the star node. The star node is connected to all outer nodes. A star graph of degree n has $2n$ connections. The middle picture shows the shape of a path graph, where every node is connected to two of its closest nodes, except for the first and last node which are only connected to one other node. A path graph of degree n has $2(n-1)$ connections. The rightmost picture shows a complete graph, where every node is connected to every other node. A complete graph of degree n has $n(n-1)$ connections.
+Knowledge of the network structure is an important aspect to understanding how a contagion spreads in a network and to understand the result of the simulations in Section \ref{simulation-section}. This section is dedicated to studying the network structure of the deterministic networks and the construction of the transmission tree. The simulations in Section \ref{simulation-section} cover one random network and three different deterministic networks (meaning their topology is fully known before its construction, no randomization is involved in its initialization); the star, path and complete networks. Figure \ref{threetrees} shows these three graphs with $n=5$. The leftmost graph represents the star network, where five of the nodes are called "outer" nodes and the sixth node is the star node denoted $n_*$. Note that a star network with $n=5$ have $n+1=6$ nodes. All outer nodes are connected to only a single node; the star node. The star node is connected to all outer nodes. A star graph of degree n has $2n$ connections. The middle graph represents the shape of a path graph, where every node is connected to two of its closest nodes, except for the first and last node which are only connected to one other node. A path graph of degree n has $2(n-1)$ connections. Finally, the rightmost graph represents a complete graph, where every node is connected to every other node. A complete graph of degree n has $n(n-1)$ connections.
 
 \begin{figure}[H]
 \begin{tikzpicture}
@@ -652,7 +665,7 @@ We give a stochastic description of the transmission process on networks in Sect
 
 There is a fourth model not considered in this report; the SIRS-model (susceptible-infected-recovered-susceptible). This effectively combines the SIR- and SIS-models into something more complex. The model is not considered because of time-constraints. The SIRS-model does not come with any new behaviour which is not present in the other models, but we shall briefly describe anyway, similar to Section \ref{SIR-model-section} and \ref{sis-model-section}. 
 
-Let infections happen at a rate $\lambda_1$, recoveries at a rate $\lambda_2$ and let recovered nodes turn susceptible (a so-called vulnerability event) at a rate $\lambda_3$. For smaller $\lambda_3$, the nodes stay recovered for longer on average, and the infection will have a hard time spreading. If $\lambda_3$ is larger, recovered nodes turn susceptible faster and this helps the virus staying alive. An SIS-model is a simply an SIRS-model with $\lambda_3 \rightarrow \infty$. There are now three different events that can happen at each step; an infection, a recovery, or a vulnerability event. Let $n_z^{(r)}$ be the number of recovered nodes at event z. Then,
+Let infections happen at a rate $\lambda_1$, recoveries at a rate $\lambda_2$ and let recovered nodes turn susceptible (a so-called susceptibility event) at a rate $\lambda_3$. For smaller $\lambda_3$, the nodes stay recovered for longer on average, and the infection will have a hard time spreading. If $\lambda_3$ is larger, recovered nodes turn susceptible faster and this helps the virus staying alive. An SIS-model is a simply an SIRS-model with $\lambda_3 \rightarrow \infty$. There are now three different events that can happen at each step; an infection, a recovery, or a susceptibility event. Let $n_z^{(r)}$ be the number of recovered nodes at event z. Then,
 \begin{equation}\label{SIRS-P1}
     P(\text{Event z+1 is an infection event}) := \delta_z = \frac{n^{(c)}_z\lambda_1}{n^{(c)}_z\lambda_1+n^{(i)}_z\lambda_2+n_z^{(r)}\lambda_3},
 \end{equation}
@@ -660,36 +673,34 @@ Let infections happen at a rate $\lambda_1$, recoveries at a rate $\lambda_2$ an
     P(\text{Event z+1 is a recovery event}) := \Delta_z = \frac{n^{(i)}_z\lambda_2}{n^{(c)}_z\lambda_1+n^{(i)}_z\lambda_2+n_z^{(r)}\lambda_3},
 \end{equation}
 \begin{equation}\label{SIRS-P3}
-    P(\text{Event z+1 is a vulnerability event}) := 1-\delta_z-\Delta_z.
+    P(\text{Event z+1 is a susceptibility event}) := 1-\delta_z-\Delta_z.
 \end{equation}
 
-Let $\mathbb{I}$ and $\mathbb{R}$ be defined as in the SIR-model (Section \ref{SIR-model-section}) and let $\mathbb{S}(x)=\{c: x \Rightarrow c\}$ be the set of possible outcomes c after a single vulnerability event occurred to x.
-
-The transition probability is then
+Let $\mathbb{I}$ and $\mathbb{R}$ and $\mathbb{S}$ be defined as in the mathematical preliminaries (Section \ref{prelim}). The transition probability is then
 \begin{equation} \label{firstPSIRS}
 \begin{split}
-P(X(z+1) = m |X(z)= c) =
+P(X(z+1) = x' |X(z)= x) =
 \begin{cases}
-& \frac{\delta_z}{n_z^{(c)}}  \quad \text{if} \quad m \in \mathbb{I}(c) \\
-& \frac{\Delta_z}{n_z^{(i)}}  \quad \text{if} \quad m \in \mathbb{R}(c) \\
-& \frac{1-\delta_z-\Delta_z}{n_z^{(r)}}  \quad \text{if} \quad m \in \mathbb{S}(c) \\
+& \frac{\delta_z}{n_z^{(c)}}  \quad \text{if} \quad x' \in \mathbb{I}(x) \\
+& \frac{\Delta_z}{n_z^{(i)}}  \quad \text{if} \quad x' \in \mathbb{R}(x) \\
+& \frac{1-\delta_z-\Delta_z}{n_z^{(r)}}  \quad \text{if} \quad x' \in \mathbb{S}(x) \\
 & 0 \quad \text{otherwise,}
 \end{cases}
 \end{split}
 \end{equation}
 The generator for the Markov process is
 \begin{equation}\label{qSIRS}
-    q(x(z)\Rightarrow m) = 
+    q(x(z)\Rightarrow x') = 
     \begin{cases}
-    & \lambda_1 \quad \text{if} \quad m \in \mathbb{I}(x(z)) \\
-    & \lambda_2 \quad \text{if} \quad m \in \mathbb{R}(x(z)) \\
-    & \lambda_3 \quad \text{if} \quad m \in \mathbb{S}(x(z)) \\
-    & -\lambda_1n_z^{(c)}-\lambda_2n_z^{(i)}-\lambda_3n_z^{(r)}   \quad \text{if} \quad m = x(z)\\
+    & \lambda_1 \quad \text{if} \quad x' \in \mathbb{I}(x(z)) \\
+    & \lambda_2 \quad \text{if} \quad x' \in \mathbb{R}(x(z)) \\
+    & \lambda_3 \quad \text{if} \quad x' \in \mathbb{S}(x(z)) \\
+    & -\lambda_1n_z^{(c)}-\lambda_2n_z^{(i)}-\lambda_3n_z^{(r)}   \quad \text{if} \quad x' = x(z)\\
     & 0 \quad \text{otherwise.}
     \end{cases}
 \end{equation}
 
-For low values of $\lambda_3$ recovered nodes take very long time to turn susceptible, which causes the states to oscillate slowly enough for the model to act as an SIR-model. If $\lambda_3$ is very large, recovered nodes turn susceptible very quickly, which causes this model to act remarkably similar to the SIS-model. 
+For low values of $\lambda_3$ recovered nodes take very long time to turn susceptible, which causes the states to oscillate slowly enough for the model to act as an SIR-model. If $\lambda_3$ is very large, recovered nodes turn susceptible very quickly, which causes this model to act remarkably similar to the SIS-model. When $\lambda_3$ is moderately large, the model yields new interactions and behaviour that might interest the reader enough for them to try their own simulations.
 
 The code openly available at \cite{github} can simulate transmission on an arbitrary network using the SIRS model using $$SIRS(C,lambda1,lambda2,lambda3,z_{end} = 3000,plt=1).$$
 The three commands \textit{SIS, SIR} and \textit{SIRS} in the code are dummy functions calling the same parent function named \textit{transmissionProcess}. This function have another parameter called $p_b$ which is a number between 0 and 1. As a susceptible node turns infected, each of its connections has a probability $p_b$ of being \textit{blocked}, which simulate people going into isolation as they become sick.
