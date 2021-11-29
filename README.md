@@ -4,7 +4,7 @@
 
 To be updated (deadline is TBD):
 
-0. **One more set of exercises worth 1 point each will be assigned next week (try to do the optional problems 1, 2 & 3 if you can).**
+0. **One more set of exercises worth 1 point each will be assigned next week (try to do the optional problems 1, 2 & 3 with bonus points if you can).**
 1. (bonus 1 point) Get GitHub account and install SageMath on your laptop and bring it to lecture on Wednesday: 
     - Try to do Problem 0 Assignment 3 https://github.com/datascience-intro/OSagnosticDESops of another course, as this will help you do the Assignment for these lectures quite easily.
 2. (bonus 1 point) Reading, Writing and Coding resources and exercises:
